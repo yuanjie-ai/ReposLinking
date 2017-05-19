@@ -1,6 +1,11 @@
 # Skill
-- r
-- python
-- scala
-- spark
-- sql
+- Theory
+  - DA
+  - DM
+  - DL
+- Tools
+  - r
+  - python
+  - scala
+  - spark
+  - sql
