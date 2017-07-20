@@ -4,6 +4,7 @@
 __title__ = 'Deploy'
 __author__ = 'JieYuan'
 __mtime__ = '2017/7/18'
+import time
 import pandas as pd
 import pymysql
 import pymysql.cursors
