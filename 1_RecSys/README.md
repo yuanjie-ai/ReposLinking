@@ -37,3 +37,9 @@ unzip thrift-0.10.0.zip
 cd ./thrift-0.10.0
 python setup.py install
 ```
+
+- hbase
+```
+unzip gen-py.zip
+mv ./gen-py/hbase python_path/Lib/site-packages
+```
