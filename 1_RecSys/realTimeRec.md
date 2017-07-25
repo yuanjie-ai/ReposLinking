@@ -7,7 +7,6 @@ __mtime__ = '2017/7/18'
 import time
 import pandas as pd
 import pymysql
-import pymysql.cursors
 import happybase
 import redis
 
@@ -29,6 +28,7 @@ class MySql(object):
                         [str(i) for i in range(1031, 1041)]) \
                .apply(lambda x: '-'.join(x), 1) \
                .tolist()
+        self.connection.close()
         return df
     def in_sale_list_pc(self):
         sql_pc = "SELECT CateCode, ProductCode FROM firspre1.bx_product WHERE ChannelCode = 'SC1001' and status = 8"
@@ -44,6 +44,7 @@ class HBase(object):
         member_id = member_id[::-1] + ':' + 'ins'
         tab = self.connection.table(tablename)
         row = tab.row(row=member_id)
+        self.connection.close()
         if row == {}:
             return 'newUser'
         else:
@@ -52,10 +53,12 @@ class HBase(object):
         tab = self.connection.table(tablename)
         member_id = member_id[::-1] + ':' + 'ins'
         tab.put(row=member_id, data={'f: rec_list': str(rec_list)})
+        self.connection.close()
     def exposure_n(self, member_id='member_id' , recing_product=[], tablename='ns_firs:tdm_firs_rec_agg_info'):
         member_id = ':'.join([member_id[::-1], time.strftime("%Y-%m-%d", time.localtime()), recing_product])
         tab = self.connection.table(tablename)
         row = tab.row(row=member_id)
+        self.connection.close()
         if b'f:exposure_n' in row.keys():
             return int(row[b'f:exposure_n'].decode('utf-8'))
         else:
@@ -115,21 +118,26 @@ jd = '{"acctNo":"0201437284", \
        "visitId":"149906541806166592", \
        "visitNum":"5"}'
 
-u = Update(jd)
-if u.operationType == '2':
-    if h.exposure_n(u.member_id, u.recing_product) >= 5:
+try:
+    u = Update(jd)
+    if u.operationType == '2':
+        if h.exposure_n(u.member_id, u.recing_product) >= 5:
+            acct_no_rec_list = h.get_rec_list(u.member_id)
+            update_rec_list = u.update_rec_list(recing_product = u.recing_product,
+                                                offline_rec_list = eval(acct_no_rec_list[1]),
+                                                in_sale_list = m.in_sale_list_pc())
+            Redis().backup_rec_list(acct_no_rec_list[0], update_rec_list[:4])
+            print((acct_no_rec_list[0], update_rec_list[:4]))
+    else:
         acct_no_rec_list = h.get_rec_list(u.member_id)
         update_rec_list = u.update_rec_list(recing_product = u.recing_product,
                                             offline_rec_list = eval(acct_no_rec_list[1]),
                                             in_sale_list = m.in_sale_list_pc())
         Redis().backup_rec_list(acct_no_rec_list[0], update_rec_list[:4])
         print((acct_no_rec_list[0], update_rec_list[:4]))
+except BaseException:
+    print(-1)
 else:
-    acct_no_rec_list = h.get_rec_list(u.member_id)
-    update_rec_list = u.update_rec_list(recing_product = u.recing_product,
-                                        offline_rec_list = eval(acct_no_rec_list[1]),
-                                        in_sale_list = m.in_sale_list_pc())
-    Redis().backup_rec_list(acct_no_rec_list[0], update_rec_list[:4])
-    print((acct_no_rec_list[0], update_rec_list[:4]))
+    print(0)
 
 ```
