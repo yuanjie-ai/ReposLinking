@@ -2,7 +2,7 @@
 # :rocket:Required Packages :facepunch:
 ---
 
-- Anaconda
+- Anaconda: 设置系统环境变量anaconda2/bin
 ```
 bash Anaconda2-4.4.0-Linux-x86_64.sh
 ```
@@ -41,5 +41,5 @@ python setup.py install
 - hbase
 ```
 unzip gen-py.zip
-mv ./gen-py/hbase python_path/Lib/site-packages
+mv ./gen-py/hbase [python_path]/anaconda2/lib/python2.7/site-packages
 ```
