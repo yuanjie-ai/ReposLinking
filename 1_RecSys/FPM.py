@@ -30,8 +30,17 @@ class FPM(object):
         df = df.selectExpr('l', 'r', 'confidencePositive confidence', "confidencePositive/confidenceNegative ir", "0.5*(confidencePositive+confidenceNegative) kulc")
         return df
 
+#-----------------------------------------------------------------------------
+t_3M = time.strftime("%Y-%m-%d",time.localtime(time.time()-60*60*24*30*3))
+df = spark.table("fbidm.yuanjie_rec_all") \
+          .filter("cate = 'chp'") \
+          .filter(col('dt') > t_3M)
+df = df.select('user_id', concat_ws('-', 'item_id1', 'item_id2').name('items'))
+df.cache()
+df = df.groupBy('user_id').agg(collect_set('items').name('items'))
+# 多项
+f = udf(lambda x: float(len(x)), FloatType())
+df = df.filter(f('items')>1)
 
-
-df = FPM.getLastRules(df = spark.table('fbidm.yuanjie_test'))
-
+df = FPM.getLastRules(df = df)
 df.write.saveAsTable('fbidm.yuanjie_last', mode='overwrite') 
