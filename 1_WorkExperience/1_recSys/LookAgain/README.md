@@ -21,7 +21,7 @@ os.system(cmd + '__main__.py')
 
 ## IDE spark任务结构
 - Data.zip
-    - idf.txt
+    - idf.txt
 - MySparkOnline.zip
     - MyPackage
         -  SparkSession
