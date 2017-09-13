@@ -50,7 +50,14 @@ df_buy_004 = df_buy.selectExpr("split(item, '-')[1] acct_no",
                                  "'%s' stat_date" %t)
 df_buy_005 = df_buy_004.withColumn('rec_id', lit('CHP_FPM_005'))
 
-df = df_look_002.union(df_look_003).union(df_buy_004).union(df_buy_005)
+df = df_look_002.union(df_look_003).union(df_buy_004).union(df_buy_005) \
+                .select(['acct_no',
+                         'member_id',
+                         'product_type',
+                         'product_id',
+                         'ab_flag',
+                         'stat_date',
+                         'rec_id'])
+                         
 spark.sql("set hive.exec.dynamic.partition.mode = nonstrict")
-df.write.insertInto('fbidm.tdm_firs_chp_rules', True)                            
-#df_look.write.saveAsTable('', mode = 'overwrite', partitionBy = 'stat_date')
+df.write.insertInto('fbidm.tdm_firs_chp_rules', True)
