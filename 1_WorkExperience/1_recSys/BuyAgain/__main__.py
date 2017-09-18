@@ -7,6 +7,8 @@ t_3M = time.strftime("%Y-%m-%d",time.localtime(time.time()-60*60*24*30*3))
 t_6M = time.strftime("%Y-%m-%d",time.localtime(time.time()-60*60*24*30*6))
 t_1Y = time.strftime("%Y-%m-%d",time.localtime(time.time()-60*60*24*30*12))
 
+# ------------------------------------------------------------------------------
+# Main
 # 推荐基础信息表
 df = spark.table('fdm_dpa.mls_recommender_base_info_detail') \
           .selectExpr('acct_no', 'member_id', 'l2_prod_group_cd cate', 'l3_prod_group_cd item', 'entry_time dt') \
@@ -30,12 +32,22 @@ chp_in_sale = spark.table('finance.sor_cfs_project') \
 chp_in_sale_list = SparkCol.colToList(chp_in_sale)
 
 # 最近1天热门商品列表(在售)
+def orderCollect_list(by, ordered, topN=None, asc=False):
+    """
+    :param by: 按照该列排序
+    :param ordered: 被排序列
+    :param asc: 默认降序
+    :return: 有序集合数组
+    """
+    f = udf(lambda x: np.array(x)[:, 1].tolist()[:topN], ArrayType(StringType()))
+    return f(sort_array(collect_list(struct(by, ordered)), asc=asc)).name('orderCollect_list')
+
 t_1_hot = df.filter(col('dt') > t_1)[col('item_id').isin(chp_in_sale_list)] \
             .groupBy('item_id').count() \
-            .orderBy(desc('count')) \
-            .select('item_id')
+            .select('count', 'item_id')
 t_1_hot.cache()
-t_1_hot = SparkCol.takeN(t_1_hot, 20)
+t_1_hot = SparkCol.takeN(t_1_hot.select(orderCollect_list('count', 'item_id', topN=10)), 1)
+
 
 # 关联规则
 f = udf(lambda x: float(len(x)), FloatType())
