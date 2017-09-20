@@ -39,7 +39,7 @@ class MySql(object):
 
 class HBase(object):
     def __init__(self):
-        self.connection = happybase.Connection('namenode1-sit.cnsuning.com', 9090)
+        self.connection = happybase.Connection('xxx.com', 9090)
     def get_rec_list(self, member_id='member_id', tablename='yuanjie_rec_list'):
         member_id = member_id[::-1] + ':' + 'ins'
         tab = self.connection.table(tablename)
@@ -89,7 +89,7 @@ class Update(object):
 
 class Redis(object):
     def __init__(self):
-        self.pool = redis.ConnectionPool(host='10.37.107.218', port=6379, db=0)
+        self.pool = redis.ConnectionPool(host='11.11.11.11', port=6379, db=0)
         self.r = redis.Redis(connection_pool = self.pool)
     def get_rec_list(self, acct_no='acct_no_1'):
         return self.r.get(acct_no)
