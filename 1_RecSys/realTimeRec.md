@@ -11,10 +11,10 @@ import happybase
 import redis
 
 # Connect to the database
-# url: jdbc:mysql://10.37.107.197:3306/firspre1
+# url: jdbc:mysql://10.10.10.10:8888/firspre1
 class MySql(object):
     def __init__(self):
-        params = dict(host='10.37.107.197',
+        params = dict(host='10.10.10.10',
                       user='FIRSusr',
                       password='vr6UT5Y06PR8',
                       db='firspre1',
