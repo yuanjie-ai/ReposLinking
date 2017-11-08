@@ -1,4 +1,4 @@
-[<h1 align = "center">:rocket: Competitions :facepunch:</h1>][]
+[<h1 align = "center">:rocket: Competitions :facepunch:</h1>][1]
 
 ---
 #
