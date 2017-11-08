@@ -4,4 +4,4 @@
 #
 
 ---
-[1]: https://github.com/Jie-Yuan/DataCompetitions
+[1]: https://github.com/Jie-Yuan/Competitions
