@@ -2,7 +2,13 @@
 
 > `复赛解决方案`
 ---
-
+## 特征工程
+- MissingFeatures
+- PolynomialFeatures
+- TargetEncoding
+- GBDTFeatures
+- NNEmbedding
+- ...
 
 
 
