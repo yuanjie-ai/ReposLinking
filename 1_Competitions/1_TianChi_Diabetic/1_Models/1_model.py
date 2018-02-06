@@ -27,8 +27,6 @@ for i, miss in enumerate([miss1, miss2, miss3, miss4, miss5, miss6, miss7, miss8
     data1['miss_' + str(i)] = data1[miss].isnull().sum(1)
 
 X = data1[data1.label != -1].fillna('-999').drop(['label'], 1).values
-# poly = PolynomialFeatures(degree=2, interaction_only=False, include_bias=True)
-# X = poly.fit_transform(data1[data1.label != -1].fillna('-999').drop(['label'], 1).values)
 y = train.label.ravel()
 
 clf = LGBMClassifier(
