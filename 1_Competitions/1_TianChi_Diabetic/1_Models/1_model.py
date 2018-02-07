@@ -12,7 +12,7 @@ data = pd.concat([train, test.assign(label=-1)])
 # MissingFeatures
 miss1 = ['SNP21', 'SNP22', 'SNP23', 'DMjiazushi', 'SNP54', 'SNP55', 'ACEID']
 miss2 = ['SNP22', 'SNP23', 'DMjiazushi', 'SNP54', 'SNP55', 'ACEID']
-miss3 = ['shousuoya', 'tangshaiyunzhou', 'DMjiazushi']
+miss3 = ['shousuoya', 'shuzhangya', 'tangshaiyunzhou', 'DMjiazushi'] # miss3 = ['shousuoya', 'tangshaiyunzhou', 'DMjiazushi']
 miss4 = ['shuzhangya', 'tangshaiyunzhou', 'DMjiazushi']
 miss5 = ['DMjiazushi', 'shousuoya', 'shuzhangya']
 miss6 = ['AST', 'DMjiazushi']
