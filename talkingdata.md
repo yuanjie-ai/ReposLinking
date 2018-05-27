@@ -4,7 +4,7 @@ https://www.kaggle.com/c/talkingdata-adtracking-fraud-detection/discussion/56262
 
 https://www.kaggle.com/jingqliu/nn-with-word2vec-large-embeddings
 
-
+https://www.kaggle.com/c/talkingdata-adtracking-fraud-detection/discussion/56282
 
 
 
